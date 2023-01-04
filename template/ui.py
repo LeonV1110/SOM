@@ -5,8 +5,10 @@ from creditcard import CreditCard
 from debitcard import DebitCard
 from coin_machine import IKEAMyntAtare2000
 from ui_info import UIPayment, UIClass, UIWay, UIDiscount, UIPayment, UIInfo
-
-
+from payment import Payment
+from order import Order
+from order_position import OrderPosition
+from ticket import Ticket
 class UI(tk.Frame):
 
 	def __init__(self, master):
@@ -18,48 +20,14 @@ class UI(tk.Frame):
 		# **************************************
 		# Below is the code you need to refactor
 		# **************************************
-
-		# get number of tariefeenheden
-		tariefeenheden: int = Tariefeenheden.get_tariefeenheden(info.from_station, info.to_station)
-
-		# compute the column in the table based on choices
-		table_column = 0
-		if info.travel_class == UIClass.FirstClass:
-			table_column = 3
-
-		# then, on the discount
-		if info.discount == UIDiscount.TwentyDiscount:
-			table_column += 1
-		elif info.discount == UIDiscount.FortyDiscount:
-			table_column += 2
-
-		# compute price
-		price: float = PricingTable.get_price (tariefeenheden, table_column)
-		if info.way == UIWay.Return:
-			price *= 2
-
-		# add 50 cents if paying with credit card
-		if info.payment == UIPayment.CreditCard:
-			price += 0.50
 		
+		ticket = Ticket(info)
+		order_pos = OrderPosition(ticket)
+		order = Order([order_pos])
+		
+		price = order.calculate_total(info)
 		# pay
-		if info.payment == UIPayment.CreditCard:
-			c = CreditCard()
-			c.connect()
-			ccid: int = c.begin_transaction(round(price, 2))
-			c.end_transaction(ccid)
-			c.disconnect()
-		elif info.payment == UIPayment.DebitCard:
-			d = DebitCard()
-			d.connect()
-			dcid: int = d.begin_transaction(round(price, 2))
-			d.end_transaction(dcid)
-			d.disconnect()
-		elif info.payment == UIPayment.Cash:
-			coin = IKEAMyntAtare2000()
-			coin.starta()
-			coin.betala(int(round(price * 100)))
-			coin.stoppa()
+		Payment.pay(info, price)
 
 #region UI Set-up below -- you don't need to change anything
 

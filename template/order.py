@@ -15,7 +15,6 @@ class Order():
     def calculate_total(self, info):
         price = 0.0
         for order_pos in self.order_positions:
-            print(order_pos.calculate_subtotal())
             price += order_pos.calculate_subtotal()
         #add payment surcharges
         payment_surcharge = Order.get_payment_surcharge(info)

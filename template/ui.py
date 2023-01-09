@@ -4,7 +4,7 @@ from pricing_table import PricingTable
 from creditcard import CreditCard
 from debitcard import DebitCard
 from coin_machine import IKEAMyntAtare2000
-from ui_info import UIPayment, UIClass, UIWay, UIDiscount, UIPayment, UIInfo
+from ui_info import UIPayment, UIClass, UIWay, UIDiscount, UIPayment, UIInfo, UITrainType
 from payment import Payment
 from order import Order
 from order_position import OrderPosition
@@ -22,9 +22,8 @@ class UI(tk.Frame):
 		# **************************************
 		
 		ticket = Ticket(info)
-		order_pos = OrderPosition(ticket)
+		order_pos = OrderPosition(ticket, info.ticket_count) #ticket_count is a raw user input, handled in constructor
 		order = Order([order_pos])
-		
 		price = order.calculate_total(info)
 		# pay
 		Payment.pay(info, price)
@@ -77,15 +76,27 @@ class UI(tk.Frame):
 		tk.Radiobutton(ticket_options_frame, text="20% discount", variable=self.discount, value=UIDiscount.TwentyDiscount.value).grid(row=12, sticky=tk.W)
 		tk.Radiobutton(ticket_options_frame, text="40% discount", variable=self.discount, value=UIDiscount.FortyDiscount.value).grid(row=13, sticky=tk.W)
 
+		# Traintype
+		tk.Label(ticket_options_frame, text = "Train type:").grid(row=14, sticky=tk.W)
+		self.train_type = tk.IntVar(value=UITrainType.National.value)
+		tk.Radiobutton(ticket_options_frame, text="National train", variable=self.train_type, value=UITrainType.National.value).grid(row=15, sticky=tk.W)
+		tk.Radiobutton(ticket_options_frame, text="International train", variable=self.train_type, value=UITrainType.International.value).grid(row=16, sticky=tk.W)
+		
+		# Ticket count
+		tk.Label(ticket_options_frame, text = "Ticket count: (in numbers)").grid(row=17, sticky=tk.W)
+		self.ticket_count = tk.StringVar()
+		tk.Entry(ticket_options_frame, textvariable=self.ticket_count).grid(row = 18, sticky=tk.W)
+
+
 		payment_frame = tk.Frame(self.master, highlightbackground="#cccccc", highlightthickness=1)
 		payment_frame.pack(fill=tk.BOTH, expand=1, padx=10, pady=10)
 
 		# Payment
-		tk.Label(payment_frame, text = "Payment:").grid(row=14, sticky=tk.W)
+		tk.Label(payment_frame, text = "Payment:").grid(row=19, sticky=tk.W)
 		self.payment = tk.IntVar(value=UIPayment.Cash.value)
-		tk.Radiobutton(payment_frame, text="Cash", variable=self.payment, value=UIPayment.Cash.value).grid(row=15, sticky=tk.W)
-		tk.Radiobutton(payment_frame, text="Credit Card", variable=self.payment, value=UIPayment.CreditCard.value).grid(row=16, sticky=tk.W)
-		tk.Radiobutton(payment_frame, text="Debit Card", variable=self.payment, value=UIPayment.DebitCard.value).grid(row=17, sticky=tk.W)
+		tk.Radiobutton(payment_frame, text="Cash", variable=self.payment, value=UIPayment.Cash.value).grid(row=20, sticky=tk.W)
+		tk.Radiobutton(payment_frame, text="Credit Card", variable=self.payment, value=UIPayment.CreditCard.value).grid(row=21, sticky=tk.W)
+		tk.Radiobutton(payment_frame, text="Debit Card", variable=self.payment, value=UIPayment.DebitCard.value).grid(row=22, sticky=tk.W)
 
 		# Pay button
 		tk.Button(self.master, text="Pay", command=self.on_click_pay).pack(side=tk.RIGHT, ipadx=10, padx=10, pady=10)
@@ -101,7 +112,9 @@ class UI(tk.Frame):
 			travel_class=self.travel_class.get(),
 			way=self.way.get(),
 			discount=self.discount.get(),
-			payment=self.payment.get())
+			payment=self.payment.get(),
+			train_type= self.train_type.get(),
+			ticket_count = self.ticket_count.get()) #raw user input
 
 	def on_exit(self):
 		self.quit()

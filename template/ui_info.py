@@ -18,6 +18,10 @@ class UIPayment(IntEnum):
 	CreditCard = 2
 	Cash= 3
 
+class UITrainType(IntEnum):
+	National = 1
+	International = 2
+
 class UIInfo:
 	from_station: str = ""
 	to_station: str = ""
@@ -26,10 +30,13 @@ class UIInfo:
 	discount: UIDiscount.NoDiscount
 	payment: UIPayment.Cash
 
-	def __init__(self, from_station: str, to_station: str, travel_class: UIClass, way: UIWay, discount: UIDiscount, payment: UIPayment):
+	def __init__(self, from_station: str, to_station: str, travel_class: UIClass, way: UIWay, discount: UIDiscount, payment: UIPayment, train_type: UITrainType, ticket_count : int):
 		self.from_station = from_station
 		self.to_station = to_station
 		self.travel_class = travel_class
 		self.way = way
 		self.discount = discount
 		self.payment = payment
+		self.train_type = train_type
+		self.ticket_count = ticket_count
+

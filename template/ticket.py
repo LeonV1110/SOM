@@ -5,6 +5,8 @@ from pricing_table import PricingTable
 from exceptions import InvalidDestination
 from database import Database
 
+#TODO: think about creating seperate ticket subclasses for international and national
+
 class Ticket:
     travel_class: UIClass = UIClass.SecondClass
     international: bool = False #internation destination | set if the destination is international

@@ -7,7 +7,7 @@ from abc import abstractmethod, ABC
 
 #TODO: think about creating seperate ticket subclasses for international and national
 
-class Ticket:
+class Ticket(ABC):
     travel_class: UIClass = UIClass.SecondClass
     international_train: bool = False #uses international train | user input
     retour: bool = False

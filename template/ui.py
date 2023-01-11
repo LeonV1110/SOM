@@ -5,10 +5,6 @@ from debitcard import DebitCard
 from coin_machine import IKEAMyntAtare2000
 from ui_info import UIPayment, UIClass, UIWay, UIDiscount, UIPayment, UIInfo, UITrainType
 from order import Order
-from order_position import OrderPosition
-from ticket import NationalTicket, InternationalTicket
-from database import Database
-
 
 class UI(tk.Frame):
 
@@ -22,23 +18,13 @@ class UI(tk.Frame):
         # Below is the code you need to refactor
         # **************************************
 
-        order = UI.build_order(info)
+        order = Order()
+        order.add_ticket(info)
         price = order.calculate_total(info)
 
         UI.pay(info, price)
 
         order.print()
-
-    @staticmethod
-    def build_order(info: UIInfo):
-        if info.to_station in Database.get_international_destinations():
-            ticket = InternationalTicket(info)
-        else:
-            ticket = NationalTicket(info)
-
-        order_pos = OrderPosition(ticket, info.ticket_count)  # ticket_count is a raw user input, handled in constructor
-        order = Order([order_pos])
-        return order
 
     @staticmethod
     def pay(info, price):

@@ -1,17 +1,17 @@
 import datetime
 from ui_info import UIPayment
-
+from order_position import OrderPosition
 
 class Order():
     order_date: datetime = datetime.datetime.now()
     order_positions: list = []
 
-    def __init__(self, order_positions):
+    def __init__(self):
         self.order_date = datetime.datetime.now()
-        self.order_positions = order_positions
         return
 
-    def add_order_pos(self, order_pos):
+    def add_ticket(self, info):
+        order_pos = OrderPosition(info)
         self.order_positions.append(order_pos)
 
     def calculate_total(self, info):

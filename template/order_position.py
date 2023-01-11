@@ -1,4 +1,6 @@
 from ticket import Ticket
+
+
 class OrderPosition():
     quantity: int = 1
     ticket: Ticket
@@ -14,4 +16,4 @@ class OrderPosition():
         return
 
     def calculate_subtotal(self):
-        return self.quantity*self.ticket.get_ticket_price()
+        return self.quantity * self.ticket.get_ticket_price()

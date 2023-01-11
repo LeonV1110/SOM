@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Tariefeenheden:
 
     @staticmethod
@@ -78,6 +79,6 @@ class Tariefeenheden:
                 return 0
             else:
                 return Tariefeenheden.get_tariefeenheden(to, frm)
-        
+
         else:
             raise Exception("Unknown stations")

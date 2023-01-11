@@ -8,7 +8,8 @@ from ui_info import UIPayment, UIClass, UIWay, UIDiscount, UIPayment, UIInfo, UI
 from payment import Payment
 from order import Order
 from order_position import OrderPosition
-from ticket import Ticket
+from ticket import Ticket, NationalTicket, InternationalTicket
+from database import Database
 class UI(tk.Frame):
 
 	def __init__(self, master):
@@ -20,12 +21,18 @@ class UI(tk.Frame):
 		# **************************************
 		# Below is the code you need to refactor
 		# **************************************
+
+		# get the price
+		if info.to_station in Database.get_international_destinations(): 
+			ticket = InternationalTicket(info)
+		else: 
+			ticket = NationalTicket(info)
 		
-		ticket = Ticket(info)
 		order_pos = OrderPosition(ticket, info.ticket_count) #ticket_count is a raw user input, handled in constructor
 		order = Order([order_pos])
 		price = order.calculate_total(info)
-		# pay
+		
+		# start the payment process
 		Payment.pay(info, price)
 
 #region UI Set-up below -- you don't need to change anything

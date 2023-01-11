@@ -21,6 +21,10 @@ class Order():
         price += payment_surcharge
 
         return price
+    
+    def print(self):
+        #connect to printer via adapter
+        return
 
     @staticmethod
     def get_payment_surcharge(info):

@@ -5,7 +5,7 @@ class OrderPosition():
 
     def __init__(self, ticket, quantity):
         self.ticket = ticket
-        #quantiy is a raw user input, if it's an int we'll use it, if not 1 is used instead
+        # quantiy is a raw user input, if it's an int we'll use it, if not 1 is used instead
         try:
             self.quantity = int(quantity)
         except:

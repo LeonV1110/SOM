@@ -53,7 +53,7 @@ class NationalTicket(Ticket):
         tariefeenheden: int = Tariefeenheden.get_tariefeenheden(self.from_station, self.to_station)
 
         # compute the column in the table based on choices and discounts
-        table_column: int = self.get_table_col()
+        table_column: int = self.__get_table_col__()
 
         # compute price using the table col
         price: float = PricingTable.get_price(tariefeenheden, table_column)
@@ -63,16 +63,16 @@ class NationalTicket(Ticket):
             price *= 2
 
         # add any ticket surcharges 
-        ticket_surcharges = self.get_ticket_surcharges(price)
+        ticket_surcharges = self.__get_ticket_surcharges__(price)
         price += ticket_surcharges
 
         return price
 
-    def get_ticket_surcharges(self, price):
+    def __get_ticket_surcharges__(self, price):
         if self.international_train: return price / 10  # 10% surcharge
         return 0.0  # return 0 as default
 
-    def get_table_col(self):
+    def __get_table_col__(self):
         table_column = 0
         # compute the column in the table based on choices
         if self.travel_class == UIClass.FirstClass:

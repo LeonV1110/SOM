@@ -33,8 +33,8 @@ class UIInfo:
     to_station: str = ""
     travel_class: UIClass = UIClass.SecondClass
     way: UIWay = UIWay.OneWay
-    discount: UIDiscount.NoDiscount
-    payment: UIPayment.Cash
+    discount: UIDiscount = UIDiscount.NoDiscount
+    payment: UIPayment = UIPayment.Cash
 
     def __init__(self, from_station: str, to_station: str, travel_class: UIClass, way: UIWay, discount: UIDiscount,
                  payment: UIPayment, train_type: UITrainType, ticket_count: int):

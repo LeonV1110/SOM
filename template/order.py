@@ -4,7 +4,7 @@ from order_position import OrderPosition
 
 class Order():
     order_date: datetime = datetime.datetime.now()
-    order_positions: list = []
+    order_positions: list[OrderPosition] = []
 
     def __init__(self):
         self.order_date = datetime.datetime.now()
